@@ -1,0 +1,25 @@
+{
+    "name": "tsujitaisuke/php-unix-command",
+    "description": "a clone of unix commands in php.",
+    "type": "project",
+    "require": {
+        "phpunit/phpunit": "^8.2"
+    },
+    "license": "MIT",
+    "config": {
+        "platform": {
+            "php": "7.2"
+        }
+    },
+    "authors": [
+        {
+            "name": "tsujitaisuke",
+            "email": "mail@tsujitaisuke.net"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "TsujiTaisuke\\": "src/TsujiTaisuke/"
+        }
+    }
+}
