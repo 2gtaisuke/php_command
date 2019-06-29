@@ -13,10 +13,11 @@ set_error_handler(function($errno, $errstr, $errfile, $errline){
 # オプションを設定する
 $option_parser = new OptionParser(Wc::SHORT_OPTS, Wc::LONG_OPTS);
 $options = $option_parser->parse(Wc::OPTION_SET);
+$exist_status = 0;
 
 if (array_key_exists('version', $options)) {
     echo 'version: 1 LICENSE: MIT' . PHP_EOL;
-    exit(0);
+    exit($exist_status);
 } else if (array_key_exists('help', $options)) {
      echo <<<EOF
 Usage:
@@ -32,7 +33,7 @@ Description:
    a clone of wc(word count) in php.
 
 EOF;
-    exit(0);
+    exit($exist_status);
 }
 
 # オプションキーの並び替え
@@ -70,7 +71,6 @@ foreach (array_slice($argv, 1) as $arg) {
         $command_args[] = $arg;
     }
 }
-
 if (count($command_args) === 0) {
     $file = new File('', File::INPUT_TYPE_STDIN);
     while (!feof(STDIN)) {
@@ -82,9 +82,11 @@ if (count($command_args) === 0) {
     foreach ($command_args as $file_name) {
         if (!file_exists($file_name)) {
             fputs(STDERR, "wc: {$file_name}: No such file or directory" . PHP_EOL);
+            $exist_status = 1;
             continue;
         } else if (!is_readable($file_name)) {
             fputs(STDERR, "wc: {$file_name}: Permission denied" . PHP_EOL);
+            $exist_status = 1;
             continue;
         }
 
@@ -108,3 +110,4 @@ if (count($command_args) === 0) {
 }
 
 echo $wc->getResult();
+exit($exist_status);
